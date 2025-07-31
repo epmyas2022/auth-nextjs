@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signInSchema } from "../schemas/auth.schema";
 import { oAuthSignInAction, signInAction } from "../server/actions";
+import Image from "next/image";
 
 export default function SignInForm() {
   const {
@@ -61,15 +62,32 @@ export default function SignInForm() {
         Iniciar sesión
       </button>
 
-      <div className="flex justify-center items-center gap-4 mt-2">
+      <div className="flex flex-col justify-center items-center gap-4 mt-2">
         <div className="bg-gray-200 py-2 px-4 rounded-full">
           <button
             type="button"
-            onClick={() => oAuthSignInAction('github')}
+            onClick={() => oAuthSignInAction("github")}
             className="text-gray-600 hover:text-gray-800 flex items-center gap-2 font-bold cursor-pointer"
           >
             <span className="mdi mdi-github text-2xl"></span>
             Iniciar sesión con GitHub
+          </button>
+        </div>
+
+        <div className="bg-gray-200 py-2 px-4 rounded-full">
+          <button
+            type="button"
+            onClick={() => oAuthSignInAction("google")}
+            className="text-gray-600 hover:text-gray-800
+            flex items-center gap-2 font-bold cursor-pointer"
+          >
+            <Image
+              src="/google.svg"
+              alt="Google Logo"
+              width={24}
+              height={24}
+            />
+            Iniciar sesión con Google
           </button>
         </div>
       </div>

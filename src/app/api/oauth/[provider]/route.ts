@@ -44,7 +44,8 @@ export async function GET(
 
     await createSession({ id, name }, await cookies());
 
-  } catch {
+  } catch (error) {
+    console.log(error)
     return redirect(
       `/sign-in?oauthError=${encodeURIComponent("Failed to connect user")}`
     );
