@@ -13,7 +13,6 @@ export default function SignUpForm() {
   } = useForm<z.infer<typeof signUpSchema>>();
 
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
-    console.log("Form data:", data);
     await signUpAction(data);
   };
   return (

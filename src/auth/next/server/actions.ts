@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import { getSalt, hashPassword, verifyPassword } from "@/auth/core/hasher";
 import { cookies } from "next/headers";
 import { createSession, removeSession } from "@/auth/core/session";
+import { getOAuthClientProvider, OAuthProvider } from "@/auth/core/oauth/providers";
 
 export async function signUpAction(unsafeDate: z.infer<typeof signUpSchema>) {
   const { success, data } = signUpSchema.safeParse(unsafeDate);
@@ -38,14 +39,12 @@ export async function signUpAction(unsafeDate: z.infer<typeof signUpSchema>) {
       .returning({
         id: UserTable.id,
         name: UserTable.name,
-      }).get();
+      })
+      .get();
 
     const { id, name } = newUser;
 
-    await createSession(
-      { id, name: name || "Anonymous" },
-      await cookies()
-    );
+    await createSession({ id, name }, await cookies());
   } catch {
     return messages.SIGNUP.ERROR;
   }
@@ -79,9 +78,14 @@ export async function signInAction(unsafeData: z.infer<typeof signInAction>) {
   redirect("/");
 }
 
-
 export async function signOutAction() {
   await removeSession(await cookies());
 
   redirect("/");
+}
+
+export async function oAuthSignInAction(provider: OAuthProvider) {
+  const oAuthClient = getOAuthClientProvider(provider, await cookies());
+
+  redirect(oAuthClient.createAuthorizationUrl());
 }

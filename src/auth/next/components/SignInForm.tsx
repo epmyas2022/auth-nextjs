@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signInSchema } from "../schemas/auth.schema";
-import { signInAction } from "../server/actions";
+import { oAuthSignInAction, signInAction } from "../server/actions";
 
 export default function SignInForm() {
   const {
@@ -63,13 +63,14 @@ export default function SignInForm() {
 
       <div className="flex justify-center items-center gap-4 mt-2">
         <div className="bg-gray-200 py-2 px-4 rounded-full">
-          <Link
-            href="/api/oauth/github"
-            className="text-gray-600 hover:text-gray-800 flex items-center gap-2 font-bold"
+          <button
+            type="button"
+            onClick={() => oAuthSignInAction('github')}
+            className="text-gray-600 hover:text-gray-800 flex items-center gap-2 font-bold cursor-pointer"
           >
             <span className="mdi mdi-github text-2xl"></span>
             Iniciar sesión con GitHub
-          </Link>
+          </button>
         </div>
       </div>
       <p className="text-gray-600 mt-2 text-sm text-center">

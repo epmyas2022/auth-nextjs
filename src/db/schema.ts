@@ -9,8 +9,9 @@ const timestamps = {
 }
 export const UserTable = sqliteTable("users", {
   id: int().primaryKey({ autoIncrement: true }),
-  name: text(),
-  email: text().notNull().unique(),
+  name: text().notNull(),
+  email: text().unique(),
+  username: text().unique(),
   password: text(),
   ...timestamps,
 });
@@ -20,8 +21,6 @@ export const OAuthTable = sqliteTable("oauth", {
   userId: int().notNull(),
   provider: text().notNull(),
   providerAccountId: text().notNull(),
-  accessToken: text(),
-  refreshToken: text(),
   ...timestamps,
 });
 
