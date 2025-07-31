@@ -14,7 +14,7 @@ export type OAuthClientConfig<T> = {
   provider: string;
   urls: OAuthUrls;
   params?: Record<string, unknown>;
-  scopes?: string[];
+  scopes: string[];
   response: {
     tokenKey: string;
     tokenType: string;
@@ -42,6 +42,7 @@ export class OAuthClient<T> extends OAuthActions {
     const url = new URL(this.config.urls.authorizationUrl);
 
     url.searchParams.set("client_id", this.config.clientId);
+    url.searchParams.set("scope", this.config.scopes.join(" "));
     url.searchParams.set("response_type", "code");
     url.searchParams.set("redirect_uri", this.redirectUrl.toString());
     url.searchParams.set("state", state);
