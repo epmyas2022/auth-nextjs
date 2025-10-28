@@ -1,36 +1,250 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Auth Next.js
 
-## Getting Started
+Sistema de autenticación completo construido con Next.js 15, que incluye autenticación estándar (email/contraseña) y OAuth (GitHub y Google).
 
-First, run the development server:
+## 🚀 Características
+
+- ✅ **Autenticación Estándar**: Registro e inicio de sesión con email y contraseña
+- ✅ **OAuth 2.0**: Integración con GitHub y Google
+- ✅ **Gestión de Sesiones**: Sistema de sesiones basado en JWT
+- ✅ **Base de Datos**: SQLite con Drizzle ORM
+- ✅ **Seguridad**: Hash de contraseñas con bcrypt
+- ✅ **Validación**: Schemas con Zod
+- ✅ **UI Moderna**: Tailwind CSS 4
+- ✅ **TypeScript**: Totalmente tipado
+
+## 🛠️ Tecnologías
+
+- **Framework**: [Next.js 15.4.4](https://nextjs.org/)
+- **React**: 19.1.0
+- **Base de Datos**: SQLite con [Drizzle ORM](https://orm.drizzle.team/)
+- **Autenticación**: JWT (jsonwebtoken) + bcrypt
+- **Validación**: Zod
+- **Estilos**: Tailwind CSS 4
+- **Formularios**: React Hook Form
+
+## 📋 Requisitos Previos
+
+- Node.js 20 o superior
+- npm, yarn, pnpm o bun
+
+## ⚙️ Configuración
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/epmyas2022/auth-nextjs.git
+cd auth-nextjs
+```
+
+### 2. Instalar dependencias
+
+```bash
+npm install
+# o
+yarn install
+# o
+pnpm install
+# o
+bun install
+```
+
+### 3. Configurar variables de entorno
+
+Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
+
+```env
+# Base de datos
+DB_FILE_NAME=file:local.db
+
+# Autenticación
+SECRET_KEY=tu-clave-secreta-muy-segura-aqui
+EXPIRED_SESSION=7d
+
+# Entorno
+NODE_ENV=development
+
+# OAuth - URL base de redirección
+OAUTH_REDIRECT_URL_BASE=http://localhost:3000/api/oauth/
+
+# GitHub OAuth
+OAUTH_GITHUB_CLIENT_ID=tu-github-client-id
+OAUTH_GITHUB_CLIENT_SECRET=tu-github-client-secret
+
+# Google OAuth
+OAUTH_GOOGLE_CLIENT_ID=tu-google-client-id
+OAUTH_GOOGLE_CLIENT_SECRET=tu-google-client-secret
+```
+
+### 4. Configurar OAuth (opcional)
+
+#### GitHub OAuth:
+1. Ve a [GitHub Developer Settings](https://github.com/settings/developers)
+2. Crea una nueva OAuth App
+3. Authorization callback URL: `http://localhost:3000/api/oauth/github`
+4. Copia el Client ID y Client Secret a tu archivo `.env`
+
+#### Google OAuth:
+1. Ve a [Google Cloud Console](https://console.cloud.google.com/)
+2. Crea un nuevo proyecto o selecciona uno existente
+3. Habilita la API de Google+
+4. Crea credenciales OAuth 2.0
+5. Authorized redirect URI: `http://localhost:3000/api/oauth/google`
+6. Copia el Client ID y Client Secret a tu archivo `.env`
+
+### 5. Configurar la base de datos
+
+```bash
+# Generar migraciones
+npm run db:generate
+
+# Aplicar migraciones
+npm run db:push
+```
+
+## 🚀 Iniciar el Proyecto
+
+### Modo desarrollo
 
 ```bash
 npm run dev
-# or
+# o
 yarn dev
-# or
+# o
 pnpm dev
-# or
+# o
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Producción
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Construir la aplicación
+npm run build
 
-## Learn More
+# Iniciar el servidor de producción
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 📁 Estructura del Proyecto
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+auth-nextjs/
+├── src/
+│   ├── app/                    # App Router de Next.js
+│   │   ├── (auth)/            # Rutas de autenticación
+│   │   │   ├── sign-in/       # Página de inicio de sesión
+│   │   │   └── sign-up/       # Página de registro
+│   │   ├── api/               # API Routes
+│   │   │   └── oauth/         # Endpoints de OAuth
+│   │   ├── layout.tsx         # Layout principal
+│   │   └── page.tsx           # Página de inicio
+│   ├── auth/                  # Sistema de autenticación
+│   │   ├── core/              # Lógica core de autenticación
+│   │   │   ├── hasher.ts      # Hash de contraseñas (bcrypt)
+│   │   │   ├── jwt.ts         # Manejo de JWT
+│   │   │   ├── session.ts     # Gestión de sesiones
+│   │   │   └── oauth/         # Implementación OAuth
+│   │   │       ├── oauth.client.ts
+│   │   │       ├── oauth.ts
+│   │   │       └── providers/ # Proveedores OAuth (GitHub, Google)
+│   │   └── next/              # Integración con Next.js
+│   │       ├── components/    # Componentes de UI
+│   │       ├── schemas/       # Schemas de validación
+│   │       └── server/        # Server actions
+│   ├── db/                    # Configuración de base de datos
+│   │   ├── index.ts           # Cliente de Drizzle
+│   │   └── schema.ts          # Schema de la BD
+│   └── shared/                # Utilidades compartidas
+│       ├── enviroment.ts      # Gestión de variables de entorno
+│       └── schemas/           # Schemas compartidos
+├── drizzle.config.ts          # Configuración de Drizzle
+└── package.json
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🗄️ Schema de Base de Datos
 
-## Deploy on Vercel
+### Tabla: users
+- `id` - ID autoincremental
+- `name` - Nombre del usuario
+- `email` - Email único
+- `username` - Nombre de usuario único
+- `password` - Contraseña hasheada (opcional para OAuth)
+- `created_at`, `updated_at`, `deleted_at` - Timestamps
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Tabla: oauth
+- `id` - ID autoincremental
+- `userId` - Referencia al usuario
+- `provider` - Proveedor OAuth (github/google)
+- `providerAccountId` - ID de la cuenta en el proveedor
+- `created_at`, `updated_at`, `deleted_at` - Timestamps
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Tabla: revoked_tokens
+- `id` - ID autoincremental
+- `token` - Token revocado
+- `createdAt` - Fecha de revocación
+
+## 🔧 Scripts Disponibles
+
+```bash
+# Desarrollo
+npm run dev          # Inicia el servidor de desarrollo con Turbopack
+
+# Producción
+npm run build        # Construye la aplicación para producción
+npm run start        # Inicia el servidor de producción
+
+# Linting
+npm run lint         # Ejecuta ESLint
+
+# Base de datos
+npm run db:generate  # Genera migraciones de Drizzle
+npm run db:migrate   # Aplica migraciones
+npm run db:push      # Push del schema a la BD
+npm run db:studio    # Abre Drizzle Studio (GUI para la BD)
+npm run db:reset     # Resetea la base de datos
+```
+
+## 🔐 Flujo de Autenticación
+
+### Autenticación Estándar
+1. El usuario se registra con email, nombre de usuario y contraseña
+2. La contraseña se hashea con bcrypt
+3. Se crea un registro en la tabla `users`
+4. Al iniciar sesión, se verifica la contraseña
+5. Se genera un JWT y se almacena en cookies
+
+### Autenticación OAuth
+1. El usuario hace clic en "Iniciar sesión con GitHub/Google"
+2. Se redirige al proveedor OAuth
+3. El usuario autoriza la aplicación
+4. El proveedor redirige con un código de autorización
+5. Se intercambia el código por un access token
+6. Se obtiene información del usuario
+7. Se crea o actualiza el usuario en la BD
+8. Se genera un JWT y se almacena en cookies
+
+## 📝 Notas de Desarrollo
+
+- El proyecto usa el App Router de Next.js 15
+- Tailwind CSS 4 con PostCSS para los estilos
+- React Hook Form para el manejo de formularios
+- Zod para validación de datos y variables de entorno
+- Drizzle ORM con SQLite para persistencia de datos
+- JWT almacenado en cookies HTTP-only para seguridad
+
+## 🤝 Contribuir
+
+Las contribuciones son bienvenidas. Por favor:
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto es de código abierto y está disponible bajo la licencia MIT.
